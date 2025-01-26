@@ -96,8 +96,8 @@ def main():
 
     # Input fields for project name, donated amount, and target amount (set to empty by default)
     project_name = st.text_input("Enter the project name:")
-    donated_amount = st.number_input("Enter the donated amount:", min_value=0.0, step=0.01)  # Empty by default
-    target_amount = st.number_input("Enter the target amount:", min_value=0.0, step=0.01)  # Empty by default
+    donated_amount = st.number_input("Enter the donated amount:")  # Empty by default
+    target_amount = st.number_input("Enter the target amount:")  # Empty by default
 
     # Validate that the user has input values
     if project_name == "":
