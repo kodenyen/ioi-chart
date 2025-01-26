@@ -96,15 +96,15 @@ def main():
 
     # Input fields for project name, donated amount, and target amount (set to empty by default)
     project_name = st.text_input("Enter the project name:")
-    donated_amount = st.number_input("Enter the donated amount:")  # Empty by default
-    target_amount = st.number_input("Enter the target amount:")  # Empty by default
+    donated_amount = st.number_input("Enter the donated amount:", min_value=None, step=0.01)  # Empty by default
+    target_amount = st.number_input("Enter the target amount:", min_value=None, step=0.01)  # Empty by default
 
     # Validate that the user has input values
     if project_name == "":
         st.error("Please enter the project name.")
-    elif donated_amount < 0:
+    elif donated_amount is None or donated_amount < 0:
         st.error("Please enter a valid donated amount greater than or equal to 0.")
-    elif target_amount <= 0:
+    elif target_amount is None or target_amount <= 0:
         st.error("Please enter a valid target amount greater than 0.")
     else:
         # Create the gauge chart
@@ -127,4 +127,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
