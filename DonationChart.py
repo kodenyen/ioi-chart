@@ -140,12 +140,19 @@ def main():
         col1, col2, col3 = st.columns([2, 1, 2])  # 2:1:2 ratio to control width
 
         with col1:
+            # Check if session_state keys exist; if not, initialize them
+            if 'project_name' not in st.session_state:
+                st.session_state['project_name'] = ""
             project_name = st.text_input("Enter the project name:", key="project_name")
 
         with col2:
+            if 'donated_amount' not in st.session_state:
+                st.session_state['donated_amount'] = 0.0
             donated_amount = st.number_input("Enter the donated amount:", min_value=0.0, step=0.01, key="donated_amount")
 
         with col3:
+            if 'target_amount' not in st.session_state:
+                st.session_state['target_amount'] = 0.0
             target_amount = st.number_input("Enter the target amount:", min_value=0.0, step=0.01, key="target_amount")
 
         # Validation for target_amount
