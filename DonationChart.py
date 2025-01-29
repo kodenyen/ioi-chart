@@ -87,6 +87,18 @@ def get_chart_image(fig):
 
 # Streamlit app interface
 def main():
+    # Inject custom CSS to reduce input box width
+    st.markdown("""
+        <style>
+            .stTextInput > div > input {
+                width: 50%;
+            }
+            .stNumberInput > div > input {
+                width: 50%;
+            }
+        </style>
+    """, unsafe_allow_html=True)
+
     st.title("Donation Progress Chart")
 
     # Input fields for project name, donated amount, and target amount
