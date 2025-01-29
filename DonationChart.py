@@ -11,7 +11,6 @@
 
 def main():
     pass
-
 import streamlit as st
 import matplotlib.pyplot as plt
 import numpy as np
@@ -159,6 +158,5 @@ def main():
 
 if __name__ == "__main__":
     main()
-== "__main__":
-    main()
+
 
