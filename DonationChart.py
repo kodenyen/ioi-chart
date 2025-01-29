@@ -137,11 +137,12 @@ def main():
                 # Display the chart in the Streamlit app
                 st.pyplot(fig)
 
+                # Display the "Donated as of" text below the chart
+                current_date = datetime.now().strftime("%b, %Y")
+                st.text(f"Donated as of {current_date}")
+
                 # Generate the image for download
                 img_buffer = get_chart_image(fig)
-
-                # Display the "Donated as of" text
-                st.text(f"Donated as of {datetime.now().strftime('%b, %Y')}")
 
                 # Provide a download button for the image just below the "Donated as of" text
                 st.download_button(
@@ -155,6 +156,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
