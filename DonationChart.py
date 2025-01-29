@@ -112,9 +112,7 @@ def main():
         </style>
     """, unsafe_allow_html=True)
 
-    st.title("Donation Progress Chart")
-
-    # Create the layout container
+    # Removed first title, keeping only the "Project Donation Tracker" in container
     with st.container():
         st.markdown("<h2 style='text-align: center;'>Project Donation Tracker</h2>", unsafe_allow_html=True)
         
@@ -160,5 +158,7 @@ def main():
                 st.warning("Please ensure that all fields are filled out correctly.")
 
 if __name__ == "__main__":
+    main()
+== "__main__":
     main()
 
