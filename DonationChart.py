@@ -95,7 +95,7 @@ def main():
                 padding: 10px;
                 margin: 5px 0;
                 border-radius: 5px;
-                border: 1px solid #00bfae;
+                border: 2px solid #333333;  /* Darker border */
                 background-color: #f0f8ff;
             }
             .stTextInput label, .stNumberInput label {
@@ -104,7 +104,7 @@ def main():
 
             /* Styling for the container */
             .container {
-                border: 2px solid #00bfae;
+                border: 2px solid #333333;  /* Darker border */
                 padding: 20px;
                 background-color: #f0f8ff;
                 border-radius: 10px;
@@ -173,12 +173,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
-
-
-
-
-
-
-
