@@ -138,6 +138,13 @@ def main():
                 border-radius: 8px;
                 box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             }
+
+            /* Styling for the column to make input boxes align horizontally */
+            .stColumns > div {
+                display: inline-block;
+                width: 33%;
+                padding: 0 10px;
+            }
         </style>
     """, unsafe_allow_html=True)
 
@@ -145,8 +152,8 @@ def main():
     with st.container():
         st.markdown("<h2 style='text-align: center;'>Project Donation Tracker</h2>", unsafe_allow_html=True)
         
-        # Use columns to control width of inputs
-        col1, col2, col3 = st.columns([2, 1, 2])  # 2:1:2 ratio to control width
+        # Use columns to control width of inputs (Now horizontally aligned)
+        col1, col2, col3 = st.columns([1, 1, 1])  # Even column width to make inputs appear horizontally
 
         with col1:
             project_name = st.text_input("Enter the project name:")
