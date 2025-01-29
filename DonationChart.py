@@ -40,7 +40,7 @@ def create_gauge_chart(project_name, donated_amount, target_amount):
     needle_angle = start_angle - (min(actual_percentage, 1.0) * 180)  # Capped at 100% visually
 
     # Reduce the length of the needle by scaling it (0.7 means 70% of the full length)
-    needle_length = 0.7  # Scaling factor for needle length
+    needle_length = 0.91  # Scaling factor for needle length
     ax.plot([0, needle_length * np.cos(np.radians(needle_angle))], [0, needle_length * np.sin(np.radians(needle_angle))], color='black', lw=2)
 
     # Draw the pivot
