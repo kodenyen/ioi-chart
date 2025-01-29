@@ -87,24 +87,19 @@ def get_chart_image(fig):
 
 # Streamlit app interface
 def main():
-    # Inject custom CSS to reduce input box width
-    st.markdown("""
-        <style>
-            .stTextInput > div > input {
-                width: 50%;
-            }
-            .stNumberInput > div > input {
-                width: 50%;
-            }
-        </style>
-    """, unsafe_allow_html=True)
-
     st.title("Donation Progress Chart")
 
-    # Input fields for project name, donated amount, and target amount
-    project_name = st.text_input("Enter the project name:")
-    donated_amount = st.number_input("Enter the donated amount:", min_value=0.0, step=0.01)
-    target_amount = st.number_input("Enter the target amount:", min_value=0.0, step=0.01)
+    # Use columns to control width of inputs
+    col1, col2, col3 = st.columns([2, 1, 2])  # 2:1:2 ratio to control width
+
+    with col1:
+        project_name = st.text_input("Enter the project name:")
+
+    with col2:
+        donated_amount = st.number_input("Enter the donated amount:", min_value=0.0, step=0.01)
+
+    with col3:
+        target_amount = st.number_input("Enter the target amount:", min_value=0.0, step=0.01)
 
     # Validation for target_amount
     if target_amount == 0.0:
