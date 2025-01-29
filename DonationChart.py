@@ -127,22 +127,21 @@ def main():
                 background-color: #009b83;
             }
 
-            /* Styling the inputs inside the columns */
+            /* Styling the inputs inside the container */
             .stTextInput > div, .stNumberInput > div {
                 margin-bottom: 20px;
             }
 
-            /* Add borders and subtle shadow effect to input boxes */
+            /* Adding a subtle shadow effect to input boxes */
             .stTextInput > div, .stNumberInput > div {
                 border: 2px solid #0099cc;
                 border-radius: 8px;
                 box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             }
 
-            /* Styling for the column to make input boxes align horizontally */
+            /* Adjusting the input container to stack vertically */
             .stColumns > div {
-                display: inline-block;
-                width: 33%;
+                width: 100%;  /* Ensure they take full width */
                 padding: 0 10px;
             }
         </style>
@@ -152,19 +151,13 @@ def main():
     with st.container():
         st.markdown("<h2 style='text-align: center;'>Project Donation Tracker</h2>", unsafe_allow_html=True)
         
-        # Use columns to control width of inputs (Now horizontally aligned)
-        col1, col2, col3 = st.columns([1, 1, 1])  # Even column width to make inputs appear horizontally
-
-        with col1:
+        # Directly stack input boxes vertically in the container
+        with st.container():  # All inputs are inside this container for styling
             project_name = st.text_input("Enter the project name:")
-
-        with col2:
             donated_amount = st.number_input("Enter the donated amount:", min_value=0.0, step=0.01)
-
-        with col3:
             target_amount = st.number_input("Enter the target amount:", min_value=0.0, step=0.01)
 
-        # Apply custom styling for the input container
+        # Apply custom styling for the input container with background and border
         st.markdown("<div class='input-container'></div>", unsafe_allow_html=True)
 
         # Validation for target_amount
