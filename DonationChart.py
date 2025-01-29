@@ -38,7 +38,10 @@ def create_gauge_chart(project_name, donated_amount, target_amount):
 
     # Draw the needle, synced with the actual donation percentage
     needle_angle = start_angle - (min(actual_percentage, 1.0) * 180)  # Capped at 100% visually
-    ax.plot([0, np.cos(np.radians(needle_angle))], [0, np.sin(np.radians(needle_angle))], color='black', lw=2)
+
+    # Reduce the length of the needle by scaling it (0.7 means 70% of the full length)
+    needle_length = 0.7  # Scaling factor for needle length
+    ax.plot([0, needle_length * np.cos(np.radians(needle_angle))], [0, needle_length * np.sin(np.radians(needle_angle))], color='black', lw=2)
 
     # Draw the pivot
     pivot_circle = plt.Circle((0, 0), 0.05, color='black', zorder=5)
@@ -78,9 +81,9 @@ def create_gauge_chart(project_name, donated_amount, target_amount):
 
 # Function to save the chart as an image and prepare it for download
 def get_chart_image(fig):
-    # Save the figure to a BytesIO object
+    # Save the figure to a BytesIO object with a transparent background
     img_buffer = BytesIO()
-    fig.savefig(img_buffer, format="png", dpi=300, transparent=True)
+    fig.savefig(img_buffer, format="png", dpi=300, transparent=True)  # transparent=True ensures a transparent background
     img_buffer.seek(0)
     return img_buffer
 
@@ -173,3 +176,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
