@@ -140,7 +140,7 @@ def main():
         col1, col2, col3 = st.columns([2, 1, 2])  # 2:1:2 ratio to control width
 
         with col1:
-            # Check if session_state keys exist; if not, initialize them
+            # Initialize session state keys if they don't exist
             if 'project_name' not in st.session_state:
                 st.session_state['project_name'] = ""
             project_name = st.text_input("Enter the project name:", key="project_name")
@@ -180,9 +180,9 @@ def main():
                 )
 
                 # Clear inputs after generating the chart
-                st.session_state.project_name = ""
-                st.session_state.donated_amount = 0.0
-                st.session_state.target_amount = 0.0
+                st.session_state['project_name'] = ""
+                st.session_state['donated_amount'] = 0.0
+                st.session_state['target_amount'] = 0.0
 
             else:
                 st.warning("Please ensure that all fields are filled out correctly.")
