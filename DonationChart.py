@@ -40,7 +40,7 @@ def create_gauge_chart(project_name, donated_amount, target_amount):
     needle_angle = start_angle - (min(actual_percentage, 1.0) * 180)  # Capped at 100% visually
 
     # Reduce the length of the needle by scaling it (0.7 means 70% of the full length)
-    needle_length = 0.91  # Scaling factor for needle length
+    needle_length = 0.7  # Scaling factor for needle length
     ax.plot([0, needle_length * np.cos(np.radians(needle_angle))], [0, needle_length * np.sin(np.radians(needle_angle))], color='black', lw=2)
 
     # Draw the pivot
@@ -140,13 +140,13 @@ def main():
         col1, col2, col3 = st.columns([2, 1, 2])  # 2:1:2 ratio to control width
 
         with col1:
-            project_name = st.text_input("Enter the project name:")
+            project_name = st.text_input("Enter the project name:", key="project_name")
 
         with col2:
-            donated_amount = st.number_input("Enter the donated amount:", min_value=0.0, step=0.01)
+            donated_amount = st.number_input("Enter the donated amount:", min_value=0.0, step=0.01, key="donated_amount")
 
         with col3:
-            target_amount = st.number_input("Enter the target amount:", min_value=0.0, step=0.01)
+            target_amount = st.number_input("Enter the target amount:", min_value=0.0, step=0.01, key="target_amount")
 
         # Validation for target_amount
         if target_amount == 0.0:
@@ -171,9 +171,14 @@ def main():
                     file_name=f"{project_name}_progress_chart.png",
                     mime="image/png"
                 )
+
+                # Clear inputs after generating the chart
+                st.session_state.project_name = ""
+                st.session_state.donated_amount = 0.0
+                st.session_state.target_amount = 0.0
+
             else:
                 st.warning("Please ensure that all fields are filled out correctly.")
 
 if __name__ == "__main__":
     main()
-
