@@ -143,10 +143,7 @@ def main():
                 # Generate the image for download
                 img_buffer = get_chart_image(fig)
 
-                # Display the "Donated as of [date]" text below the chart
-                st.text("Donated as of " + datetime.now().strftime("%b, %Y"))
-
-                # Provide a download button for the image just below the date text
+                # Remove the "Donated as of" text and directly place the download button below the chart
                 st.download_button(
                     label="Download Chart Image",
                     data=img_buffer,
@@ -158,6 +155,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
