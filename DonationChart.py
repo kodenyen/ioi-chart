@@ -87,45 +87,78 @@ def get_chart_image(fig):
 
 # Streamlit app interface
 def main():
+    # Inject custom CSS for borders and background
+    st.markdown("""
+        <style>
+            .container {
+                border: 2px solid #00bfae;
+                padding: 20px;
+                background-color: #f0f8ff;
+                border-radius: 10px;
+            }
+            .stTextInput > div > input, .stNumberInput > div > input {
+                width: 100%;
+            }
+            .stButton button {
+                background-color: #00bfae;
+                color: white;
+                font-weight: bold;
+                border-radius: 5px;
+                padding: 10px 20px;
+            }
+            .stButton button:hover {
+                background-color: #009b83;
+            }
+        </style>
+    """, unsafe_allow_html=True)
+
     st.title("Donation Progress Chart")
 
-    # Use columns to control width of inputs
-    col1, col2, col3 = st.columns([2, 1, 2])  # 2:1:2 ratio to control width
+    # Create the layout container
+    with st.container():
+        st.markdown("<h2 style='text-align: center;'>Project Donation Tracker</h2>", unsafe_allow_html=True)
+        
+        # Use columns to control width of inputs
+        col1, col2, col3 = st.columns([2, 1, 2])  # 2:1:2 ratio to control width
 
-    with col1:
-        project_name = st.text_input("Enter the project name:")
+        with col1:
+            project_name = st.text_input("Enter the project name:")
 
-    with col2:
-        donated_amount = st.number_input("Enter the donated amount:", min_value=0.0, step=0.01)
+        with col2:
+            donated_amount = st.number_input("Enter the donated amount:", min_value=0.0, step=0.01)
 
-    with col3:
-        target_amount = st.number_input("Enter the target amount:", min_value=0.0, step=0.01)
+        with col3:
+            target_amount = st.number_input("Enter the target amount:", min_value=0.0, step=0.01)
 
-    # Validation for target_amount
-    if target_amount == 0.0:
-        st.warning("Target amount cannot be zero!")
+        # Validation for target_amount
+        if target_amount == 0.0:
+            st.warning("Target amount cannot be zero!")
 
-    # Generate chart button
-    if st.button("Generate Chart"):
-        if project_name and donated_amount > 0.0 and target_amount > 0.0:
-            # Create the gauge chart
-            fig = create_gauge_chart(project_name, donated_amount, target_amount)
+        # Generate chart button
+        if st.button("Generate Chart"):
+            if project_name and donated_amount > 0.0 and target_amount > 0.0:
+                # Create the gauge chart
+                fig = create_gauge_chart(project_name, donated_amount, target_amount)
 
-            # Display the chart in the Streamlit app
-            st.pyplot(fig)
+                # Display the chart in the Streamlit app
+                st.pyplot(fig)
 
-            # Generate the image for download
-            img_buffer = get_chart_image(fig)
+                # Generate the image for download
+                img_buffer = get_chart_image(fig)
 
-            # Provide a download button for the image
-            st.download_button(
-                label="Download Chart Image",
-                data=img_buffer,
-                file_name=f"{project_name}_progress_chart.png",
-                mime="image/png"
-            )
-        else:
-            st.warning("Please ensure that all fields are filled out correctly.")
+                # Place the download button just below the date text
+                st.text("Donated as of " + datetime.now().strftime("%b, %Y"))
+
+                # Provide a download button for the image
+                st.download_button(
+                    label="Download Chart Image",
+                    data=img_buffer,
+                    file_name=f"{project_name}_progress_chart.png",
+                    mime="image/png"
+                )
+            else:
+                st.warning("Please ensure that all fields are filled out correctly.")
 
 if __name__ == "__main__":
     main()
+
