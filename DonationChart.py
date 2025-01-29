@@ -38,10 +38,7 @@ def create_gauge_chart(project_name, donated_amount, target_amount):
 
     # Draw the needle, synced with the actual donation percentage
     needle_angle = start_angle - (min(actual_percentage, 1.0) * 180)  # Capped at 100% visually
-
-    # Reduce the length of the needle by scaling it (0.7 means 70% of the full length)
-    needle_length = 0.7  # Scaling factor for needle length
-    ax.plot([0, needle_length * np.cos(np.radians(needle_angle))], [0, needle_length * np.sin(np.radians(needle_angle))], color='black', lw=2)
+    ax.plot([0, np.cos(np.radians(needle_angle))], [0, np.sin(np.radians(needle_angle))], color='black', lw=2)
 
     # Draw the pivot
     pivot_circle = plt.Circle((0, 0), 0.05, color='black', zorder=5)
@@ -81,111 +78,53 @@ def create_gauge_chart(project_name, donated_amount, target_amount):
 
 # Function to save the chart as an image and prepare it for download
 def get_chart_image(fig):
-    # Save the figure to a BytesIO object with a transparent background
+    # Save the figure to a BytesIO object
     img_buffer = BytesIO()
-    fig.savefig(img_buffer, format="png", dpi=300, transparent=True)  # transparent=True ensures a transparent background
+    fig.savefig(img_buffer, format="png", dpi=300, transparent=True)
     img_buffer.seek(0)
     return img_buffer
 
 # Streamlit app interface
 def main():
-    # Inject custom CSS for borders and background
-    st.markdown("""
-        <style>
-            /* Styling for the input fields */
-            .stTextInput > div > input, .stNumberInput > div > input {
-                width: 100%;
-                padding: 10px;
-                margin: 5px 0;
-                border-radius: 5px;
-                border: 2px solid #333333;  /* Darker border */
-                background-color: #f0f8ff;
-            }
-            .stTextInput label, .stNumberInput label {
-                font-weight: bold;
-            }
+    st.title("Donation Progress Chart")
 
-            /* Styling for the container */
-            .container {
-                border: 2px solid #333333;  /* Darker border */
-                padding: 20px;
-                background-color: #f0f8ff;
-                border-radius: 10px;
-            }
+    # Use columns to control width of inputs
+    col1, col2, col3 = st.columns([2, 1, 2])  # 2:1:2 ratio to control width
 
-            /* Styling for the button */
-            .stButton button {
-                background-color: #00bfae;
-                color: white;
-                font-weight: bold;
-                border-radius: 5px;
-                padding: 10px 20px;
-            }
-            .stButton button:hover {
-                background-color: #009b83;
-            }
+    with col1:
+        project_name = st.text_input("Enter the project name:")
 
-            /* Styling the inputs inside the columns */
-            .stTextInput > div, .stNumberInput > div {
-                margin-bottom: 20px;
-            }
-        </style>
-    """, unsafe_allow_html=True)
+    with col2:
+        donated_amount = st.number_input("Enter the donated amount:", min_value=0.0, step=0.01)
 
-    # Removed first title, keeping only the "Project Donation Tracker" in container
-    with st.container():
-        st.markdown("<h2 style='text-align: center;'>Project Donation Tracker</h2>", unsafe_allow_html=True)
-        
-        # Use columns to control width of inputs
-        col1, col2, col3 = st.columns([2, 1, 2])  # 2:1:2 ratio to control width
+    with col3:
+        target_amount = st.number_input("Enter the target amount:", min_value=0.0, step=0.01)
 
-        with col1:
-            # Initialize session state keys if they don't exist
-            if 'project_name' not in st.session_state:
-                st.session_state['project_name'] = ""
-            project_name = st.text_input("Enter the project name:", key="project_name")
+    # Validation for target_amount
+    if target_amount == 0.0:
+        st.warning("Target amount cannot be zero!")
 
-        with col2:
-            if 'donated_amount' not in st.session_state:
-                st.session_state['donated_amount'] = 0.0
-            donated_amount = st.number_input("Enter the donated amount:", min_value=0.0, step=0.01, key="donated_amount")
+    # Generate chart button
+    if st.button("Generate Chart"):
+        if project_name and donated_amount > 0.0 and target_amount > 0.0:
+            # Create the gauge chart
+            fig = create_gauge_chart(project_name, donated_amount, target_amount)
 
-        with col3:
-            if 'target_amount' not in st.session_state:
-                st.session_state['target_amount'] = 0.0
-            target_amount = st.number_input("Enter the target amount:", min_value=0.0, step=0.01, key="target_amount")
+            # Display the chart in the Streamlit app
+            st.pyplot(fig)
 
-        # Validation for target_amount
-        if target_amount == 0.0:
-            st.warning("Target amount cannot be zero!")
+            # Generate the image for download
+            img_buffer = get_chart_image(fig)
 
-        # Generate chart button
-        if st.button("Generate Chart"):
-            if project_name and donated_amount > 0.0 and target_amount > 0.0:
-                # Create the gauge chart
-                fig = create_gauge_chart(project_name, donated_amount, target_amount)
-
-                # Display the chart in the Streamlit app
-                st.pyplot(fig)
-
-                # Generate the image for download
-                img_buffer = get_chart_image(fig)
-
-                # Remove the "Donated as of" text and directly place the download button below the chart
-                st.download_button(
-                    label="Download Chart Image",
-                    data=img_buffer,
-                    file_name=f"{project_name}_progress_chart.png",
-                    mime="image/png"
-                )
-
-                # Clear inputs after generating the chart
-                st.session_state['project_name'] = ""
-                st.session_state['donated_amount'] = 0.0
-                st.session_state['target_amount'] = 0.0
-
-            else:
-                st.warning("Please ensure that all fields are filled out correctly.")
+            # Provide a download button for the image
+            st.download_button(
+                label="Download Chart Image",
+                data=img_buffer,
+                file_name=f"{project_name}_progress_chart.png",
+                mime="image/png"
+            )
+        else:
+            st.warning("Please ensure that all fields are filled out correctly.")
 
 if __name__ == "__main__":
     main()
