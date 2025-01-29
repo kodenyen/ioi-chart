@@ -107,11 +107,11 @@ def main():
                 color: #333333;  /* Dark label text */
             }
 
-            /* Styling for the container */
-            .container {
-                border: 2px solid #333333;  /* Darker border */
+            /* Styling for the container with light-dark background and thick green border */
+            .input-container {
+                border: 5px solid #006400;  /* Thick green border */
                 padding: 20px;
-                background-color: #f0f8ff;
+                background-color: #d3d3d3;  /* Light dark background */
                 border-radius: 10px;
             }
 
@@ -148,7 +148,7 @@ def main():
         </style>
     """, unsafe_allow_html=True)
 
-    # Removed first title, keeping only the "Project Donation Tracker" in container
+    # Container with the input boxes and custom styling
     with st.container():
         st.markdown("<h2 style='text-align: center;'>Project Donation Tracker</h2>", unsafe_allow_html=True)
         
@@ -163,6 +163,9 @@ def main():
 
         with col3:
             target_amount = st.number_input("Enter the target amount:", min_value=0.0, step=0.01)
+
+        # Apply custom styling for the input container
+        st.markdown("<div class='input-container'></div>", unsafe_allow_html=True)
 
         # Validation for target_amount
         if target_amount == 0.0:
