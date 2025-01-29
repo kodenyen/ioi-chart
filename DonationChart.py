@@ -22,6 +22,11 @@ from io import BytesIO
 def create_gauge_chart(project_name, donated_amount, target_amount):
     fig, ax = plt.subplots(figsize=(12, 8), subplot_kw={'aspect': 'equal'})  # Enlarged chart size
 
+    # Validate that the target amount is greater than 0
+    if target_amount <= 0:
+        st.error("Target amount must be greater than 0.")
+        return None
+
     # Calculate the actual percentage of the donated amount
     actual_percentage = donated_amount / target_amount  # Actual percentage based on donation
     visual_percentage = min(actual_percentage, 1.0)  # Clamp visual percentage to 100% for progress and needle
@@ -89,28 +94,55 @@ def get_chart_image(fig):
 def main():
     st.title("Donation Progress Chart")
 
-    # Input fields for project name, donated amount, and target amount
+    # Input fields for project name, donated amount, and target amount (using text_input to allow empty fields)
     project_name = st.text_input("Enter the project name:")
-    donated_amount = st.number_input("Enter the donated amount:", min_value=0.0, step=0.01)
-    target_amount = st.number_input("Enter the target amount:", min_value=0.0, step=0.01)
+    donated_amount = st.text_input("Enter the donated amount:")  # Empty by default
+    target_amount = st.text_input("Enter the target amount:")  # Empty by default
 
-    if project_name and donated_amount and target_amount:
-        # Create the gauge chart
-        fig = create_gauge_chart(project_name, donated_amount, target_amount)
+    # Convert input strings to float for the chart calculation
+    try:
+        if donated_amount:
+            donated_amount = float(donated_amount)
+        else:
+            donated_amount = 0.0
+    except ValueError:
+        donated_amount = 0.0  # Default value if the input is not a number
 
-        # Display the chart in the Streamlit app
-        st.pyplot(fig)
+    try:
+        if target_amount:
+            target_amount = float(target_amount)
+        else:
+            target_amount = 0.0
+    except ValueError:
+        target_amount = 0.0  # Default value if the input is not a number
 
-        # Generate the image for download
-        img_buffer = get_chart_image(fig)
+    # Add a button for the user to click to generate the chart
+    if st.button("Generate Chart"):
+        # Validate that the user has input values
+        if project_name == "":
+            st.error("Please enter the project name.")
+        elif donated_amount < 0:
+            st.error("Please enter a valid donated amount greater than or equal to 0.")
+        elif target_amount <= 0:
+            st.error("Please enter a valid target amount greater than 0.")
+        else:
+            # Create the gauge chart
+            fig = create_gauge_chart(project_name, donated_amount, target_amount)
 
-        # Provide a download button for the image
-        st.download_button(
-            label="Download Chart Image",
-            data=img_buffer,
-            file_name=f"{project_name}_progress_chart.png",
-            mime="image/png"
-        )
+            if fig is not None:
+                # Display the chart in the Streamlit app
+                st.pyplot(fig)
+
+                # Generate the image for download
+                img_buffer = get_chart_image(fig)
+
+                # Provide a download button for the image
+                st.download_button(
+                    label="Download Chart Image",
+                    data=img_buffer,
+                    file_name=f"{project_name}_progress_chart.png",
+                    mime="image/png"
+                )
 
 if __name__ == "__main__":
     main()
