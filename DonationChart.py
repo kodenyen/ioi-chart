@@ -89,14 +89,12 @@ def main():
     # Inject custom CSS for borders and background
     st.markdown("""
         <style>
-            .container {
-                border: 2px solid #00bfae;
-                padding: 20px;
-                background-color: #f0f8ff;
-                border-radius: 10px;
-            }
             .stTextInput > div > input, .stNumberInput > div > input {
                 width: 100%;
+                padding: 10px;
+                margin: 5px 0;
+                border-radius: 5px;
+                border: 1px solid #00bfae;
             }
             .stButton button {
                 background-color: #00bfae;
@@ -107,6 +105,18 @@ def main():
             }
             .stButton button:hover {
                 background-color: #009b83;
+            }
+            .container {
+                border: 2px solid #00bfae;
+                padding: 20px;
+                background-color: #f0f8ff;
+                border-radius: 10px;
+            }
+            .stTextInput label, .stNumberInput label {
+                font-weight: bold;
+            }
+            .stTextInput > div, .stNumberInput > div {
+                margin-bottom: 20px;
             }
         </style>
     """, unsafe_allow_html=True)
@@ -155,6 +165,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
