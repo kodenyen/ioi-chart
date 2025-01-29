@@ -63,9 +63,6 @@ def create_gauge_chart(project_name, donated_amount, target_amount):
     # Increase space between "out of" and target amount
     ax.text(0, -0.55, f'${target_amount:,.2f}', horizontalalignment='center', fontsize=14, fontweight='bold', color='black')
 
-    # Add the date on the next line to prevent overlap
-    ax.text(0, -0.65, f'Donated as of {current_date}', horizontalalignment='center', fontsize=12, fontweight='bold', color='black')
-
     # Add project name as title (removed 'progress' from title)
     plt.title(f'{project_name}', fontsize=16, fontweight='bold', pad=20, ha='center')  # Title now just the project name
 
@@ -111,9 +108,7 @@ def main():
         </style>
     """, unsafe_allow_html=True)
 
-    st.title("Donation Progress Chart")
-
-    # Create the layout container
+    # Removed first title, keeping only the "Project Donation Tracker" in container
     with st.container():
         st.markdown("<h2 style='text-align: center;'>Project Donation Tracker</h2>", unsafe_allow_html=True)
         
@@ -142,13 +137,12 @@ def main():
                 # Display the chart in the Streamlit app
                 st.pyplot(fig)
 
-                # Generate the image for download
+                # Display the "Donated as of" text below the chart
+                current_date = datetime.now().strftime("%b, %Y")
+                st.text(f"Donated as of {current_date}")
+
+                # Provide a download button for the image just below the "Donated as of" text
                 img_buffer = get_chart_image(fig)
-
-                # Place the download button just below the date text
-                st.text("Donated as of " + datetime.now().strftime("%b, %Y"))
-
-                # Provide a download button for the image
                 st.download_button(
                     label="Download Chart Image",
                     data=img_buffer,
@@ -160,6 +154,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
