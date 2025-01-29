@@ -89,7 +89,7 @@ def get_chart_image(fig):
 
 # Streamlit app interface
 def main():
-    # Inject custom CSS for borders and background
+    # Inject custom CSS for borders, background, and input box colors
     st.markdown("""
         <style>
             /* Styling for the input fields */
@@ -99,10 +99,12 @@ def main():
                 margin: 5px 0;
                 border-radius: 5px;
                 border: 2px solid #333333;  /* Darker border */
-                background-color: #f0f8ff;
+                background-color: #e6f7ff;  /* Light blue background */
+                color: #333333;  /* Dark text */
             }
             .stTextInput label, .stNumberInput label {
                 font-weight: bold;
+                color: #333333;  /* Dark label text */
             }
 
             /* Styling for the container */
@@ -128,6 +130,13 @@ def main():
             /* Styling the inputs inside the columns */
             .stTextInput > div, .stNumberInput > div {
                 margin-bottom: 20px;
+            }
+
+            /* Add borders and subtle shadow effect to input boxes */
+            .stTextInput > div, .stNumberInput > div {
+                border: 2px solid #0099cc;
+                border-radius: 8px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             }
         </style>
     """, unsafe_allow_html=True)
