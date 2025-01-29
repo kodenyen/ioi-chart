@@ -17,7 +17,7 @@ import numpy as np
 from datetime import datetime
 from io import BytesIO
 
-# Function to create the gauge chart
+# Function to create the gauge chart with aesthetic needle
 def create_gauge_chart(project_name, donated_amount, target_amount):
     fig, ax = plt.subplots(figsize=(12, 8), subplot_kw={'aspect': 'equal'})  # Enlarged chart size
 
@@ -41,9 +41,18 @@ def create_gauge_chart(project_name, donated_amount, target_amount):
 
     # Reduce the length of the needle by scaling it (0.7 means 70% of the full length)
     needle_length = 0.91  # Scaling factor for needle length
-    ax.plot([0, needle_length * np.cos(np.radians(needle_angle))], [0, needle_length * np.sin(np.radians(needle_angle))], color='black', lw=2)
+    
+    # Add a gradient effect to the needle (using a darker tone at the bottom for depth)
+    ax.plot([0, needle_length * np.cos(np.radians(needle_angle))], 
+            [0, needle_length * np.sin(np.radians(needle_angle))], 
+            color='#00bfae', lw=6, solid_capstyle='round', zorder=3)  # Thick green needle with smooth edges
 
-    # Draw the pivot
+    # Add shadow for the needle to give it a 3D effect
+    ax.plot([0, needle_length * np.cos(np.radians(needle_angle + 2))], 
+            [0, needle_length * np.sin(np.radians(needle_angle + 2))], 
+            color='gray', lw=6, alpha=0.3, solid_capstyle='round', zorder=2)  # Subtle shadow to make it look 3D
+
+    # Draw the pivot (center circle) with more aesthetics (glow effect)
     pivot_circle = plt.Circle((0, 0), 0.05, color='black', zorder=5)
     ax.add_artist(pivot_circle)
 
