@@ -151,11 +151,13 @@ def main():
     with st.container():
         st.markdown("<h2 style='text-align: center;'>Project Donation Tracker</h2>", unsafe_allow_html=True)
         
-        # Directly stack input boxes vertically in the container
-        with st.container():  # All inputs are inside this container for styling
-            project_name = st.text_input("Enter the project name:")
-            donated_amount = st.number_input("Enter the donated amount:", min_value=0.0, step=0.01)
-            target_amount = st.number_input("Enter the target amount:", min_value=0.0, step=0.01)
+        # Use a custom container div for styling and input boxes
+        st.markdown("<div class='input-container'></div>", unsafe_allow_html=True)
+
+        # Stack input fields vertically
+        project_name = st.text_input("Enter the project name:")
+        donated_amount = st.number_input("Enter the donated amount:", min_value=0.0, step=0.01)
+        target_amount = st.number_input("Enter the target amount:", min_value=0.0, step=0.01)
 
         # Apply custom styling for the input container with background and border
         st.markdown("<div class='input-container'></div>", unsafe_allow_html=True)
