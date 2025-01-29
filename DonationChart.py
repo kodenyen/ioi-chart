@@ -141,44 +141,39 @@ def main():
         </style>
     """, unsafe_allow_html=True)
 
-    # Container with the input boxes and custom styling
-    with st.container():
-        st.markdown("<h2 style='text-align: center;'>Project Donation Tracker</h2>", unsafe_allow_html=True)
-        
-        # Create input container with inputs stacked vertically
-        with st.container():
-            st.markdown("<div class='input-container'></div>", unsafe_allow_html=True)
+    # Title
+    st.markdown("<h2 style='text-align: center;'>Project Donation Tracker</h2>", unsafe_allow_html=True)
 
-            # Input fields stacked vertically
-            project_name = st.text_input("Enter the project name:")
-            donated_amount = st.number_input("Enter the donated amount:", min_value=0.0, step=0.01)
-            target_amount = st.number_input("Enter the target amount:", min_value=0.0, step=0.01)
+    # Input fields stacked vertically
+    project_name = st.text_input("Enter the project name:")
+    donated_amount = st.number_input("Enter the donated amount:", min_value=0.0, step=0.01)
+    target_amount = st.number_input("Enter the target amount:", min_value=0.0, step=0.01)
 
-        # Validation for target_amount
-        if target_amount == 0.0:
-            st.warning("Target amount cannot be zero!")
+    # Validation for target_amount
+    if target_amount == 0.0:
+        st.warning("Target amount cannot be zero!")
 
-        # Generate chart button
-        if st.button("Generate Chart"):
-            if project_name and donated_amount > 0.0 and target_amount > 0.0:
-                # Create the gauge chart
-                fig = create_gauge_chart(project_name, donated_amount, target_amount)
+    # Generate chart button
+    if st.button("Generate Chart"):
+        if project_name and donated_amount > 0.0 and target_amount > 0.0:
+            # Create the gauge chart
+            fig = create_gauge_chart(project_name, donated_amount, target_amount)
 
-                # Display the chart in the Streamlit app
-                st.pyplot(fig)
+            # Display the chart in the Streamlit app
+            st.pyplot(fig)
 
-                # Generate the image for download
-                img_buffer = get_chart_image(fig)
+            # Generate the image for download
+            img_buffer = get_chart_image(fig)
 
-                # Remove the "Donated as of" text and directly place the download button below the chart
-                st.download_button(
-                    label="Download Chart Image",
-                    data=img_buffer,
-                    file_name=f"{project_name}_progress_chart.png",
-                    mime="image/png"
-                )
-            else:
-                st.warning("Please ensure that all fields are filled out correctly.")
+            # Remove the "Donated as of" text and directly place the download button below the chart
+            st.download_button(
+                label="Download Chart Image",
+                data=img_buffer,
+                file_name=f"{project_name}_progress_chart.png",
+                mime="image/png"
+            )
+        else:
+            st.warning("Please ensure that all fields are filled out correctly.")
 
 if __name__ == "__main__":
     main()
