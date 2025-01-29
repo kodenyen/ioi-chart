@@ -89,13 +89,28 @@ def main():
     # Inject custom CSS for borders and background
     st.markdown("""
         <style>
+            /* Styling for the input fields */
             .stTextInput > div > input, .stNumberInput > div > input {
                 width: 100%;
                 padding: 10px;
                 margin: 5px 0;
                 border-radius: 5px;
                 border: 1px solid #00bfae;
+                background-color: #f0f8ff;
             }
+            .stTextInput label, .stNumberInput label {
+                font-weight: bold;
+            }
+
+            /* Styling for the container */
+            .container {
+                border: 2px solid #00bfae;
+                padding: 20px;
+                background-color: #f0f8ff;
+                border-radius: 10px;
+            }
+
+            /* Styling for the button */
             .stButton button {
                 background-color: #00bfae;
                 color: white;
@@ -106,15 +121,8 @@ def main():
             .stButton button:hover {
                 background-color: #009b83;
             }
-            .container {
-                border: 2px solid #00bfae;
-                padding: 20px;
-                background-color: #f0f8ff;
-                border-radius: 10px;
-            }
-            .stTextInput label, .stNumberInput label {
-                font-weight: bold;
-            }
+
+            /* Styling the inputs inside the columns */
             .stTextInput > div, .stNumberInput > div {
                 margin-bottom: 20px;
             }
