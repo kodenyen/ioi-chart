@@ -60,8 +60,9 @@ def create_gauge_chart(project_name, donated_amount, target_amount):
     ax.text(-1, -0.15, f'Donated: ${donated_amount:,.2f}', horizontalalignment='center', fontsize=14, fontweight='bold', color='black')
     ax.text(1, -0.15, f'Target: ${target_amount:,.2f}', horizontalalignment='center', fontsize=14, fontweight='bold', color='black')
 
-    # Display actual donation percentage in the "Progress" label, even if it exceeds 100%
-    ax.text(0, -0.25, f'Progress: {actual_percentage * 100:.2f}%', horizontalalignment='center', fontsize=14, fontweight='bold', color='black')
+    # Display actual donation percentage in the "Progress" label, rounded to a single digit (without decimals)
+    progress_percentage = round(actual_percentage * 100)  # Round the progress percentage to the nearest integer
+    ax.text(0, -0.25, f'Progress: {progress_percentage}%', horizontalalignment='center', fontsize=14, fontweight='bold', color='black')
 
     # Add current amount donated as of current date, split the text to avoid crowding
     current_date = datetime.now().strftime("%b, %Y")
@@ -99,7 +100,7 @@ def get_chart_image(fig):
 # Streamlit app interface
 def main():
     # Inject custom CSS for borders, background, and input box colors
-    st.markdown(""" 
+    st.markdown("""
         <style>
             /* Styling for the input fields */
             .stTextInput > div > input, .stNumberInput > div > input {
@@ -162,13 +163,9 @@ def main():
     if target_amount == 0.0:
         st.warning("Target amount cannot be zero!")
 
-    # Additional validation for donated_amount
-    if donated_amount > target_amount:
-        st.warning("Donated amount cannot exceed the target amount!")
-
     # Generate chart button
     if st.button("Generate Chart"):
-        if project_name and donated_amount > 0.0 and target_amount > 0.0 and donated_amount <= target_amount:
+        if project_name and donated_amount > 0.0 and target_amount > 0.0:
             # Create the gauge chart
             fig = create_gauge_chart(project_name, donated_amount, target_amount)
 
@@ -190,4 +187,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
