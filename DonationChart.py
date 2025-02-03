@@ -16,8 +16,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 from datetime import datetime
 from io import BytesIO
+from matplotlib.animation import FuncAnimation
 
-# Function to create the gauge chart with aesthetic needle
+# Function to create the gauge chart with animated needle
 def create_gauge_chart(project_name, donated_amount, target_amount):
     fig, ax = plt.subplots(figsize=(12, 8), subplot_kw={'aspect': 'equal'})  # Enlarged chart size
 
@@ -61,7 +62,7 @@ def create_gauge_chart(project_name, donated_amount, target_amount):
     ax.text(1, -0.15, f'Target: ${target_amount:,.2f}', horizontalalignment='center', fontsize=14, fontweight='bold', color='black')
 
     # Display actual donation percentage in the "Progress" label, even if it exceeds 100%
-    ax.text(0, -0.25, f'Progress: {actual_percentage * 100:.2f}%', horizontalalignment='center', fontsize=14, fontweight='bold', color='black')
+    ax.text(0, -0.25, f'Progress: {round(actual_percentage * 100, 1)}%', horizontalalignment='center', fontsize=14, fontweight='bold', color='black')
 
     # Add current amount donated as of current date, split the text to avoid crowding
     current_date = datetime.now().strftime("%b, %Y")
@@ -86,7 +87,35 @@ def create_gauge_chart(project_name, donated_amount, target_amount):
     ax.set_ylim(-1.2, 1.2)
     ax.axis('off')
 
-    return fig
+    # Function to animate the needle
+    def update(frame):
+        needle_angle = start_angle - (min(frame / 100.0, 1.0) * 180)
+        ax.clear()
+        ax.plot(np.cos(np.radians(theta)), np.sin(np.radians(theta)), color='red', lw=30)
+        ax.plot(np.cos(np.radians(theta_progress)), np.sin(np.radians(theta_progress)), color='green', lw=30)
+        ax.plot([0, needle_length * np.cos(np.radians(needle_angle))], 
+                [0, needle_length * np.sin(np.radians(needle_angle))], 
+                color='#00bfae', lw=6, solid_capstyle='round', zorder=3)
+        ax.plot([0, needle_length * np.cos(np.radians(needle_angle + 2))], 
+                [0, needle_length * np.sin(np.radians(needle_angle + 2))], 
+                color='gray', lw=6, alpha=0.3, solid_capstyle='round', zorder=2)
+        ax.add_artist(pivot_circle)
+        ax.text(-1, -0.15, f'Donated: ${donated_amount:,.2f}', horizontalalignment='center', fontsize=14, fontweight='bold', color='black')
+        ax.text(1, -0.15, f'Target: ${target_amount:,.2f}', horizontalalignment='center', fontsize=14, fontweight='bold', color='black')
+        ax.text(0, -0.25, f'Progress: {round(frame, 1)}%', horizontalalignment='center', fontsize=14, fontweight='bold', color='black')
+        ax.text(0, -0.35, f'${donated_amount:,.2f}', horizontalalignment='center', fontsize=14, fontweight='bold', color='black')
+        ax.text(0, -0.45, 'out of', horizontalalignment='center', fontsize=14, fontweight='bold', color='black')
+        ax.text(0, -0.55, f'${target_amount:,.2f}', horizontalalignment='center', fontsize=14, fontweight='bold', color='black')
+        ax.text(0, -0.65, f'Donated as of {current_date}', horizontalalignment='center', fontsize=12, fontweight='bold', color='black')
+        plt.title(f'{project_name}', fontsize=16, fontweight='bold', pad=20, ha='center')
+        ax.set_xlim(-1.2, 1.2)
+        ax.set_ylim(-1.2, 1.2)
+        ax.axis('off')
+
+    # Create the animation
+    ani = FuncAnimation(fig, update, frames=np.linspace(0, actual_percentage * 100, 100), interval=50)
+    
+    return ani
 
 # Function to save the chart as an image and prepare it for download
 def get_chart_image(fig):
@@ -165,14 +194,14 @@ def main():
     # Generate chart button
     if st.button("Generate Chart"):
         if project_name and donated_amount > 0.0 and target_amount > 0.0:
-            # Create the gauge chart
-            fig = create_gauge_chart(project_name, donated_amount, target_amount)
+            # Create the gauge chart with animation
+            ani = create_gauge_chart(project_name, donated_amount, target_amount)
 
             # Display the chart in the Streamlit app
-            st.pyplot(fig)
+            st.pyplot(ani)
 
             # Generate the image for download
-            img_buffer = get_chart_image(fig)
+            img_buffer = get_chart_image(ani)
 
             # Remove the "Donated as of" text and directly place the download button below the chart
             st.download_button(
@@ -186,3 +215,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
