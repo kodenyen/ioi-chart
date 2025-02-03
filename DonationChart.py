@@ -16,9 +16,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 from datetime import datetime
 from io import BytesIO
-from matplotlib.animation import FuncAnimation
 
-# Function to create the gauge chart (static frame)
+# Function to create the gauge chart with aesthetic needle
 def create_gauge_chart(project_name, donated_amount, target_amount):
     fig, ax = plt.subplots(figsize=(12, 8), subplot_kw={'aspect': 'equal'})  # Enlarged chart size
 
@@ -62,7 +61,7 @@ def create_gauge_chart(project_name, donated_amount, target_amount):
     ax.text(1, -0.15, f'Target: ${target_amount:,.2f}', horizontalalignment='center', fontsize=14, fontweight='bold', color='black')
 
     # Display actual donation percentage in the "Progress" label, even if it exceeds 100%
-    ax.text(0, -0.25, f'Progress: {round(actual_percentage * 100, 1)}%', horizontalalignment='center', fontsize=14, fontweight='bold', color='black')
+    ax.text(0, -0.25, f'Progress: {actual_percentage * 100:.2f}%', horizontalalignment='center', fontsize=14, fontweight='bold', color='black')
 
     # Add current amount donated as of current date, split the text to avoid crowding
     current_date = datetime.now().strftime("%b, %Y")
@@ -89,52 +88,69 @@ def create_gauge_chart(project_name, donated_amount, target_amount):
 
     return fig
 
-# Function to create animation (save as gif or video)
-def create_animation(project_name, donated_amount, target_amount):
-    fig, ax = plt.subplots(figsize=(12, 8), subplot_kw={'aspect': 'equal'})  # Enlarged chart size
-
-    # Calculate the actual percentage of the donated amount
-    actual_percentage = donated_amount / target_amount  # Actual percentage based on donation
-
-    # Draw the gauge background (red arc)
-    start_angle = 180
-    end_angle = start_angle - 180
-    theta = np.linspace(start_angle, end_angle, 100)
-    ax.plot(np.cos(np.radians(theta)), np.sin(np.radians(theta)), color='red', lw=30)
-
-    # Draw the needle, synced with the actual donation percentage
-    needle_length = 0.91  # Scaling factor for needle length
-    
-    # Animation update function
-    def update(frame):
-        ax.clear()
-        # Redraw the background
-        ax.plot(np.cos(np.radians(theta)), np.sin(np.radians(theta)), color='red', lw=30)
-        # Update the needle position
-        needle_angle = start_angle - (min(frame / 100.0, 1.0) * 180)
-        ax.plot([0, needle_length * np.cos(np.radians(needle_angle))], 
-                [0, needle_length * np.sin(np.radians(needle_angle))], 
-                color='#00bfae', lw=6, solid_capstyle='round', zorder=3)
-
-        # Add text and labels (same as in the static chart)
-        ax.text(-1, -0.15, f'Donated: ${donated_amount:,.2f}', horizontalalignment='center', fontsize=14, fontweight='bold', color='black')
-        ax.text(1, -0.15, f'Target: ${target_amount:,.2f}', horizontalalignment='center', fontsize=14, fontweight='bold', color='black')
-        ax.text(0, -0.25, f'Progress: {round(frame, 1)}%', horizontalalignment='center', fontsize=14, fontweight='bold', color='black')
-
-        # More text and labels...
-        ax.set_xlim(-1.2, 1.2)
-        ax.set_ylim(-1.2, 1.2)
-        ax.axis('off')
-    
-    ani = FuncAnimation(fig, update, frames=np.linspace(0, actual_percentage * 100, 100), interval=50)
-    
-    # Save the animation as gif or video (optional)
-    ani.save(f'{project_name}_donation_progress.gif', writer='imagemagick', fps=30)
-    
-    return ani
+# Function to save the chart as an image and prepare it for download
+def get_chart_image(fig):
+    # Save the figure to a BytesIO object with a transparent background
+    img_buffer = BytesIO()
+    fig.savefig(img_buffer, format="png", dpi=300, transparent=True)  # transparent=True ensures a transparent background
+    img_buffer.seek(0)
+    return img_buffer
 
 # Streamlit app interface
 def main():
+    # Inject custom CSS for borders, background, and input box colors
+    st.markdown(""" 
+        <style>
+            /* Styling for the input fields */
+            .stTextInput > div > input, .stNumberInput > div > input {
+                width: 100%;
+                padding: 10px;
+                margin: 5px 0;
+                border-radius: 5px;
+                border: 2px solid #333333;  /* Darker border */
+                background-color: #e6f7ff;  /* Light blue background */
+                color: #333333;  /* Dark text */
+            }
+            .stTextInput label, .stNumberInput label {
+                font-weight: bold;
+                color: #333333;  /* Dark label text */
+            }
+
+            /* Styling for the container with light-dark background and thick green border */
+            .input-container {
+                border: 5px solid #006400;  /* Thick green border */
+                padding: 20px;
+                background-color: #d3d3d3;  /* Light dark background */
+                border-radius: 10px;
+            }
+
+            /* Styling for the button */
+            .stButton button {
+                background-color: #00bfae;
+                color: white;
+                font-weight: bold;
+                border-radius: 5px;
+                padding: 10px 20px;
+            }
+            .stButton button:hover {
+                background-color: #009b83;
+            }
+
+            /* Styling the inputs inside the container */
+            .stTextInput > div, .stNumberInput > div {
+                margin-bottom: 20px;
+            }
+
+            /* Adding a subtle shadow effect to input boxes */
+            .stTextInput > div, .stNumberInput > div {
+                border: 2px solid #0099cc;
+                border-radius: 8px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            }
+        </style>
+    """, unsafe_allow_html=True)
+
+    # Title
     st.markdown("<h2 style='text-align: center;'>Project Donation Tracker</h2>", unsafe_allow_html=True)
 
     # Input fields stacked vertically
@@ -146,10 +162,14 @@ def main():
     if target_amount == 0.0:
         st.warning("Target amount cannot be zero!")
 
+    # Additional validation for donated_amount
+    if donated_amount > target_amount:
+        st.warning("Donated amount cannot exceed the target amount!")
+
     # Generate chart button
     if st.button("Generate Chart"):
-        if project_name and donated_amount > 0.0 and target_amount > 0.0:
-            # Generate the static final frame
+        if project_name and donated_amount > 0.0 and target_amount > 0.0 and donated_amount <= target_amount:
+            # Create the gauge chart
             fig = create_gauge_chart(project_name, donated_amount, target_amount)
 
             # Display the chart in the Streamlit app
@@ -165,10 +185,6 @@ def main():
                 file_name=f"{project_name}_progress_chart.png",
                 mime="image/png"
             )
-
-            # Optionally, generate and save animation (this will generate a gif)
-            create_animation(project_name, donated_amount, target_amount)
-            st.success("Animation generated! Check the output folder for the gif.")
         else:
             st.warning("Please ensure that all fields are filled out correctly.")
 
