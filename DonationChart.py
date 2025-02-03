@@ -37,7 +37,8 @@ def create_gauge_chart(project_name, donated_amount, target_amount):
     ax.plot(np.cos(np.radians(theta_progress)), np.sin(np.radians(theta_progress)), color='green', lw=30)
 
     # Adjust the needle to stop exactly at the end of the green section
-    needle_angle = progress_end_angle  # Needle will now match the end of the green arc
+    # The needle angle should be equal to the end angle of the green arc
+    needle_angle = progress_end_angle  # Set the needle at the end of the green section
 
     # Reduce the length of the needle by scaling it (0.7 means 70% of the full length)
     needle_length = 0.91  # Scaling factor for needle length
