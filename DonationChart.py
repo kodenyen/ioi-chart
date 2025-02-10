@@ -76,7 +76,7 @@ def create_gauge_chart(project_name, donated_amount, target_amount):
     ax.text(0, -0.65, f'Donated as of {current_date}', horizontalalignment='center', fontsize=12, fontweight='bold', color='black')
 
     # Add project name as title (removed 'progress' from title)
-    plt.title(f'{project_name}', fontsize=24, fontweight='bold', pad=20, ha='center')  # Title now just the project name
+    plt.title(f'{project_name}', fontsize=30, fontweight='bold', pad=20, ha='center')  # Title now just the project name
 
     # Set the aspect ratio and hide axes
     ax.set_xlim(-1.2, 1.2)
