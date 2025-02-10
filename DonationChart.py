@@ -48,11 +48,6 @@ def create_gauge_chart(project_name, donated_amount, target_amount):
             [0, needle_length * np.sin(np.radians(needle_angle))], 
             color='#00bfae', lw=6, solid_capstyle='round', zorder=3)  # Thick green needle with smooth edges
 
-    # Add shadow for the needle to give it a 3D effect
-    ax.plot([0, needle_length * np.cos(np.radians(needle_angle + 2))], 
-            [0, needle_length * np.sin(np.radians(needle_angle + 2))], 
-            color='gray', lw=6, alpha=0.3, solid_capstyle='round', zorder=2)  # Subtle shadow to make it look 3D
-
     # Draw the pivot (center circle) with more aesthetics (glow effect)
     pivot_circle = plt.Circle((0, 0), 0.05, color='black', zorder=5)
     ax.add_artist(pivot_circle)
@@ -188,3 +183,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
