@@ -55,9 +55,9 @@ def create_gauge_chart(project_name, donated_amount, target_amount):
     ax.text(-1, -0.15, f'Donated: ${donated_amount:,.2f}', horizontalalignment='center', fontsize=14, fontweight='bold', color='black')
     ax.text(1, -0.15, f'Target: ${target_amount:,.2f}', horizontalalignment='center', fontsize=14, fontweight='bold', color='black')
 
-    # Display actual donation percentage in the "Progress" label, rounded to a single digit (without decimals)
+    # Display actual donation percentage in the "Progress" label, with larger font size
     progress_percentage = round(actual_percentage * 100)  # Round the progress percentage to the nearest integer
-    ax.text(0, -0.25, f'Progress: {progress_percentage}%', horizontalalignment='center', fontsize=14, fontweight='bold', color='black')
+    ax.text(0, -0.25, f'Progress: {progress_percentage}%', horizontalalignment='center', fontsize=24, fontweight='bold', color='black')
 
     # Add current amount donated as of current date, split the text to avoid crowding
     # Removed the labels under the progress, so nothing below this point will show for donated/target amounts
@@ -173,6 +173,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
