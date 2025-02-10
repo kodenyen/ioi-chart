@@ -38,7 +38,7 @@ def create_gauge_chart(project_name, donated_amount, target_amount):
 
     # Move the needle 10% ahead of the green progress
     # 10% of 180 degrees is 18 degrees
-    needle_angle = progress_end_angle - 5.2  # Adjust needle to be 18 degrees ahead
+    needle_angle = progress_end_angle - 5.1  # Adjust needle to be 18 degrees ahead
 
     # Reduce the length of the needle by scaling it (0.7 means 70% of the full length)
     needle_length = 0.91  # Scaling factor for needle length
