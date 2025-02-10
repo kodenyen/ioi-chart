@@ -60,13 +60,10 @@ def create_gauge_chart(project_name, donated_amount, target_amount):
     ax.text(0, -0.25, f'Progress: {progress_percentage}%', horizontalalignment='center', fontsize=14, fontweight='bold', color='black')
 
     # Add current amount donated as of current date, split the text to avoid crowding
-    ax.text(0, -0.35, f'${donated_amount:,.2f}', horizontalalignment='center', fontsize=14, fontweight='bold', color='black')
-
-    # Separate the labels to avoid crowding
-    ax.text(0, -0.45, 'out of', horizontalalignment='center', fontsize=14, fontweight='bold', color='black')
-
-    # Increase space between "out of" and target amount
-    ax.text(0, -0.55, f'${target_amount:,.2f}', horizontalalignment='center', fontsize=14, fontweight='bold', color='black')
+    # Removed the labels under the progress, so nothing below this point will show for donated/target amounts
+    # ax.text(0, -0.35, f'${donated_amount:,.2f}', horizontalalignment='center', fontsize=14, fontweight='bold', color='black')
+    # ax.text(0, -0.45, 'out of', horizontalalignment='center', fontsize=14, fontweight='bold', color='black')
+    # ax.text(0, -0.55, f'${target_amount:,.2f}', horizontalalignment='center', fontsize=14, fontweight='bold', color='black')
 
     # Add project name as title (removed 'progress' from title)
     plt.title(f'{project_name}', fontsize=30, fontweight='bold', pad=20, ha='center')  # Title now just the project name
@@ -176,5 +173,6 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
