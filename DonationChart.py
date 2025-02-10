@@ -10,7 +10,6 @@
 #-------------------------------------------------------------------------------
 
 def main():
-    pass
 import streamlit as st
 import matplotlib.pyplot as plt
 import numpy as np
@@ -62,20 +61,8 @@ def create_gauge_chart(project_name, donated_amount, target_amount):
     # Moved the "Progress" label one line down by changing y-coordinate from -0.25 to -0.35
     ax.text(0, -0.35, f'Progress: {progress_percentage}%', horizontalalignment='center', fontsize=16, fontweight='bold', color='black')
 
-    # Add current amount donated as of current date, split the text to avoid crowding
-    current_date = datetime.now().strftime("%b, %Y")
-
-    # Separate the labels to avoid crowding
-    ax.text(0, -0.45, f'${donated_amount:,.2f}', horizontalalignment='center', fontsize=14, fontweight='bold', color='black')
-
-    # Add some space between the "out of" label and the amounts
-    ax.text(0, -0.55, 'out of', horizontalalignment='center', fontsize=14, fontweight='bold', color='black')
-
-    # Increase space between "out of" and target amount
-    ax.text(0, -0.65, f'${target_amount:,.2f}', horizontalalignment='center', fontsize=14, fontweight='bold', color='black')
-
-    # Add the date on the next line to prevent overlap
-    ax.text(0, -0.75, f'Donated as of {current_date}', horizontalalignment='center', fontsize=12, fontweight='bold', color='black')
+    # Remove labels below the "Progress" label
+    # (Removed the amount donated, "out of" label, and target amount)
 
     # Add project name as title (removed 'progress' from title)
     plt.title(f'{project_name}', fontsize=30, fontweight='bold', pad=20, ha='center')  # Title now just the project name
@@ -185,6 +172,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
