@@ -142,16 +142,16 @@ def main():
 
     # Input fields stacked vertically
     project_name = st.text_input("Enter the project name:")
-    donated_amount = st.number_input("Enter the donated amount:", min_value=0.0, step=0.01)
-    target_amount = st.number_input("Enter the target amount:", min_value=0.0, step=0.01)
+    donated_amount = st.number_input("Enter the donated amount:", min_value=0, step=1)
+    target_amount = st.number_input("Enter the target amount:", min_value=0, step=1)
 
     # Validation for target_amount
-    if target_amount == 0.0:
+    if target_amount == 0:
         st.warning("Target amount cannot be zero!")
 
     # Generate chart button
     if st.button("Generate Chart"):
-        if project_name and donated_amount > 0.0 and target_amount > 0.0:
+        if project_name and donated_amount > 0 and target_amount > 0:
             # Create the gauge chart
             fig = create_gauge_chart(project_name, donated_amount, target_amount)
 
