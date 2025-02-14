@@ -53,8 +53,8 @@ def create_gauge_chart(project_name, donated_amount, target_amount):
     ax.add_artist(pivot_circle)
 
     # Adjust text annotations to move them closer to the chart
-    ax.text(-1, -0.15, f'Donated: ${donated_amount:,.2f}', horizontalalignment='center', fontsize=14, fontweight='bold', color='black')
-    ax.text(1, -0.15, f'Target: ${target_amount:,.2f}', horizontalalignment='center', fontsize=14, fontweight='bold', color='black')
+    ax.text(-1, -0.15, f'Donated: ${donated_amount:}', horizontalalignment='center', fontsize=14, fontweight='bold', color='black')
+    ax.text(1, -0.15, f'Target: ${target_amount:}', horizontalalignment='center', fontsize=14, fontweight='bold', color='black')
 
     # Display actual donation percentage in the "Progress" label, rounded to a single digit (without decimals)
     progress_percentage = round(actual_percentage * 100)  # Round the progress percentage to the nearest 1 decimal place
