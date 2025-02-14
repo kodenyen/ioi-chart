@@ -57,7 +57,7 @@ def create_gauge_chart(project_name, donated_amount, target_amount):
     ax.text(1, -0.15, f'Target: ${target_amount:,.2f}', horizontalalignment='center', fontsize=14, fontweight='bold', color='black')
 
     # Display actual donation percentage in the "Progress" label, rounded to a single digit (without decimals)
-    progress_percentage = round(actual_percentage * 100, 1)  # Round the progress percentage to the nearest 1 decimal place
+    progress_percentage = round(actual_percentage * 100, 0)  # Round the progress percentage to the nearest 1 decimal place
     
     # Moved the "Progress" label one line down by changing y-coordinate from -0.25 to -0.35
     ax.text(0, -0.35, f'Progress: {progress_percentage}%', horizontalalignment='center', fontsize=26, fontweight='bold', color='black')
