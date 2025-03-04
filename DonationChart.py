@@ -26,7 +26,7 @@ def create_gauge_chart(project_name, donated_amount, target_amount):
     needle_angle = progress_end_angle
 
     # Define the triangular needle shape
-    needle_length = 0.9  # Length of the needle
+    needle_length = 0.94  # Length of the needle
     needle_width = 0.05  # Width of the needle at its base
 
     # Coordinates for the triangular needle
