@@ -51,7 +51,7 @@ def create_gauge_chart(project_name, donated_amount, target_amount):
     ax.add_patch(needle)
 
     # Draw the pivot (center circle) with more aesthetics
-    pivot_circle = plt.Circle((0, 0), 0.05, color='black', zorder=5)
+    pivot_circle = plt.Circle((0, 0), 0.06, color='black', zorder=5)
     ax.add_artist(pivot_circle)
 
     # Add a smaller inner circle for a more defined pivot
