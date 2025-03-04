@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from io import BytesIO
 
-# Function to create the gauge chart with a black triangular needle and curved base
+# Function to create the gauge chart with a black triangular needle, curved base, and needle 10% ahead
 def create_gauge_chart(project_name, donated_amount, target_amount):
     fig, ax = plt.subplots(figsize=(12, 8), subplot_kw={'aspect': 'equal'})  # Enlarged chart size
 
@@ -22,12 +22,13 @@ def create_gauge_chart(project_name, donated_amount, target_amount):
     theta_progress = np.linspace(start_angle, progress_end_angle, 100)
     ax.plot(np.cos(np.radians(theta_progress)), np.sin(np.radians(theta_progress)), color='green', lw=30)
 
-    # Calculate the needle angle (positioned at the progress end angle)
-    needle_angle = progress_end_angle
+    # Move the needle 10% ahead of the green progress
+    # 10% of 180 degrees is 18 degrees
+    needle_angle = progress_end_angle - 18  # Adjust needle to be 10% ahead
 
     # Define the triangular needle shape
-    needle_length = 0.93  # Length of the needle
-    needle_width = 0.06  # Width of the needle at its base
+    needle_length = 0.9  # Length of the needle
+    needle_width = 0.05  # Width of the needle at its base
 
     # Coordinates for the triangular needle
     needle_tip = (
@@ -51,7 +52,7 @@ def create_gauge_chart(project_name, donated_amount, target_amount):
     ax.add_patch(needle)
 
     # Draw the pivot (center circle) with more aesthetics
-    pivot_circle = plt.Circle((0, 0), 0.06, color='black', zorder=5)
+    pivot_circle = plt.Circle((0, 0), 0.05, color='black', zorder=5)
     ax.add_artist(pivot_circle)
 
     # Add a smaller inner circle for a more defined pivot
