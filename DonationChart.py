@@ -47,7 +47,7 @@ def create_gauge_chart(project_name, donated_amount, target_amount):
     # Draw the triangular needle
     needle = plt.Polygon(
         [needle_tip, needle_base_left, needle_base_right],
-        closed=True, color='#00000', zorder=3
+        closed=True, color='#00bfae', zorder=3
     )
     ax.add_patch(needle)
 
