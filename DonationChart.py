@@ -1,10 +1,9 @@
 import streamlit as st
 import matplotlib.pyplot as plt
 import numpy as np
-from datetime import datetime
 from io import BytesIO
 
-# Function to create the gauge chart with a triangular needle and enhanced pivot
+# Function to create the gauge chart with a black triangular needle and curved base
 def create_gauge_chart(project_name, donated_amount, target_amount):
     fig, ax = plt.subplots(figsize=(12, 8), subplot_kw={'aspect': 'equal'})  # Enlarged chart size
 
@@ -44,10 +43,10 @@ def create_gauge_chart(project_name, donated_amount, target_amount):
         needle_width * np.sin(np.radians(needle_angle - 90))
     )
 
-    # Draw the triangular needle
+    # Draw the triangular needle (black color)
     needle = plt.Polygon(
         [needle_tip, needle_base_left, needle_base_right],
-        closed=True, color='#00bfae', zorder=3
+        closed=True, color='black', zorder=3
     )
     ax.add_patch(needle)
 
@@ -58,6 +57,13 @@ def create_gauge_chart(project_name, donated_amount, target_amount):
     # Add a smaller inner circle for a more defined pivot
     inner_circle = plt.Circle((0, 0), 0.03, color='white', zorder=6)
     ax.add_artist(inner_circle)
+
+    # Add a curved base for the needle (semi-circle at the base)
+    base_radius = 0.02  # Radius of the curved base
+    base_angle = np.linspace(needle_angle - 90, needle_angle + 90, 100)  # 180-degree arc
+    base_x = base_radius * np.cos(np.radians(base_angle))
+    base_y = base_radius * np.sin(np.radians(base_angle))
+    ax.plot(base_x, base_y, color='black', lw=2, zorder=4)
 
     # Adjust text annotations to move them closer to the chart
     ax.text(-1, -0.15, f'Donated: ${donated_amount:}', horizontalalignment='center', fontsize=14, fontweight='bold', color='black')
