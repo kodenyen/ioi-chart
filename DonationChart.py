@@ -98,7 +98,7 @@ def main():
     st.markdown("""
         <style>
             /* Styling for the input fields */
-            .stTextArea > div > textarea, .stNumberInput > div > input {
+            .stTextInput > div > input, .stNumberInput > div > input {
                 width: 100%;
                 padding: 10px;
                 margin: 5px 0;
@@ -107,15 +107,9 @@ def main():
                 background-color: #e6f7ff;  /* Light blue background */
                 color: #333333;  /* Dark text */
             }
-            .stTextArea label, .stNumberInput label {
+            .stTextInput label, .stNumberInput label {
                 font-weight: bold;
                 color: #333333;  /* Dark label text */
-            }
-
-            /* Center the textarea input */
-            .stTextArea > div {
-                display: flex;
-                justify-content: center;
             }
 
             /* Styling for the container with light-dark background and thick green border */
@@ -139,12 +133,12 @@ def main():
             }
 
             /* Styling the inputs inside the container */
-            .stTextArea > div, .stNumberInput > div {
+            .stTextInput > div, .stNumberInput > div {
                 margin-bottom: 20px;
             }
 
             /* Adding a subtle shadow effect to input boxes */
-            .stTextArea > div, .stNumberInput > div {
+            .stTextInput > div, .stNumberInput > div {
                 border: 2px solid #0099cc;
                 border-radius: 8px;
                 box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -156,7 +150,7 @@ def main():
     st.markdown("<h2 style='text-align: center;'>Project Donation Tracker</h2>", unsafe_allow_html=True)
 
     # Input fields stacked vertically
-    project_name = st.text_area("Enter the project name:", height=100)  # Multiline input field
+    project_name = st.text_input("Enter the project name:")
     donated_amount = st.number_input("Enter the donated amount:", min_value=0, step=1)
     target_amount = st.number_input("Enter the target amount:", min_value=0, step=1)
 
