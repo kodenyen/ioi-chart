@@ -2,6 +2,7 @@ import streamlit as st
 import matplotlib.pyplot as plt
 import numpy as np
 from io import BytesIO
+import textwrap  # Import textwrap for multiline text
 
 # Function to create the gauge chart with a black triangular needle, curved base, and needle 10% ahead
 def create_gauge_chart(project_name, donated_amount, target_amount):
@@ -27,8 +28,8 @@ def create_gauge_chart(project_name, donated_amount, target_amount):
     needle_angle = progress_end_angle - 4.3  # Adjust needle to be 10% ahead
 
     # Define the triangular needle shape
-    needle_length = 0.91  # Length of the needle
-    needle_width = 0.07  # Width of the needle at its base
+    needle_length = 0.92  # Length of the needle
+    needle_width = 0.06  # Width of the needle at its base
 
     # Coordinates for the triangular needle
     needle_tip = (
@@ -52,7 +53,7 @@ def create_gauge_chart(project_name, donated_amount, target_amount):
     ax.add_patch(needle)
 
     # Draw the pivot (center circle) with more aesthetics
-    pivot_circle = plt.Circle((0, 0), 0.07, color='black', zorder=5)
+    pivot_circle = plt.Circle((0, 0), 0.06, color='black', zorder=5)
     ax.add_artist(pivot_circle)
 
     # Add a smaller inner circle for a more defined pivot
@@ -74,8 +75,9 @@ def create_gauge_chart(project_name, donated_amount, target_amount):
     progress_percentage = round(actual_percentage * 100)  # Round the progress percentage to the nearest 1 decimal place
     ax.text(0, -0.35, f'Progress: {progress_percentage}%', horizontalalignment='center', fontsize=26, fontweight='bold', color='black')
 
-    # Add project name as title
-    plt.title(f'{project_name}', fontsize=30, fontweight='bold', pad=20, ha='center')  # Title now just the project name
+    # Add project name as title with multiline support
+    wrapped_project_name = textwrap.fill(project_name, width=20)  # Wrap text to 20 characters per line
+    plt.title(wrapped_project_name, fontsize=30, fontweight='bold', pad=20, ha='center', va='center', multialignment='center')  # Centered multiline title
 
     # Set the aspect ratio and hide axes
     ax.set_xlim(-1.2, 1.2)
