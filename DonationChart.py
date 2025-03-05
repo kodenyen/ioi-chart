@@ -28,8 +28,8 @@ def create_gauge_chart(project_name, donated_amount, target_amount):
     needle_angle = progress_end_angle - 4.3  # Adjust needle to be 10% ahead
 
     # Define the triangular needle shape
-    needle_length = 0.92  # Length of the needle
-    needle_width = 0.06  # Width of the needle at its base
+    needle_length = 0.91  # Length of the needle
+    needle_width = 0.07  # Width of the needle at its base
 
     # Coordinates for the triangular needle
     needle_tip = (
@@ -53,7 +53,7 @@ def create_gauge_chart(project_name, donated_amount, target_amount):
     ax.add_patch(needle)
 
     # Draw the pivot (center circle) with more aesthetics
-    pivot_circle = plt.Circle((0, 0), 0.06, color='black', zorder=5)
+    pivot_circle = plt.Circle((0, 0), 0.07, color='black', zorder=5)
     ax.add_artist(pivot_circle)
 
     # Add a smaller inner circle for a more defined pivot
