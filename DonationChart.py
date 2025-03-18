@@ -166,7 +166,7 @@ def main():
 
     # Generate chart button
     if st.button("Generate Chart"):
-        if project_name and donated_amount > 0 and target_amount > 0:
+        if project_name and target_amount > 0:  # Allow donated_amount to be 0
             # Create the gauge chart
             fig = create_gauge_chart(project_name, donated_amount, target_amount)
 
