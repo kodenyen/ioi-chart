@@ -25,11 +25,11 @@ def create_gauge_chart(project_name, donated_amount, target_amount):
 
     # Move the needle 10% ahead of the green progress
     # 10% of 180 degrees is 18 degrees
-    needle_angle = progress_end_angle - 4.8  # Adjust needle to be 10% ahead
+    needle_angle = progress_end_angle - 4.3  # Adjust needle to be 10% ahead
 
     # Define the triangular needle shape
-    needle_length = 0.91  # Length of the needle
-    needle_width = 0.07  # Width of the needle at its base
+    needle_length = 0.92  # Length of the needle
+    needle_width = 0.06  # Width of the needle at its base
 
     # Coordinates for the triangular needle
     needle_tip = (
@@ -53,7 +53,7 @@ def create_gauge_chart(project_name, donated_amount, target_amount):
     ax.add_patch(needle)
 
     # Draw the pivot (center circle) with more aesthetics
-    pivot_circle = plt.Circle((0, 0), 0.07, color='black', zorder=5)
+    pivot_circle = plt.Circle((0, 0), 0.06, color='black', zorder=5)
     ax.add_artist(pivot_circle)
 
     # Add a smaller inner circle for a more defined pivot
@@ -67,9 +67,13 @@ def create_gauge_chart(project_name, donated_amount, target_amount):
     base_y = base_radius * np.sin(np.radians(base_angle))
     ax.plot(base_x, base_y, color='black', lw=2, zorder=4)
 
+    # Format donated and target amounts with commas as thousand separators
+    donated_amount_formatted = f"{donated_amount:,}"
+    target_amount_formatted = f"{target_amount:,}"
+
     # Adjust text annotations to move them closer to the chart
-    ax.text(-1, -0.15, f'Donated: ${donated_amount:}', horizontalalignment='center', fontsize=14, fontweight='bold', color='black')
-    ax.text(1, -0.15, f'Target: ${target_amount:}', horizontalalignment='center', fontsize=14, fontweight='bold', color='black')
+    ax.text(-1, -0.15, f'Donated: ${donated_amount_formatted}', horizontalalignment='center', fontsize=14, fontweight='bold', color='black')
+    ax.text(1, -0.15, f'Target: ${target_amount_formatted}', horizontalalignment='center', fontsize=14, fontweight='bold', color='black')
 
     # Display actual donation percentage in the "Progress" label, rounded to a single digit (without decimals)
     progress_percentage = round(actual_percentage * 100)  # Round the progress percentage to the nearest 1 decimal place
