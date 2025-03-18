@@ -24,8 +24,11 @@ def create_gauge_chart(project_name, donated_amount, target_amount):
     ax.plot(np.cos(np.radians(theta_progress)), np.sin(np.radians(theta_progress)), color='green', lw=30)
 
     # Move the needle 10% ahead of the green progress
-    # 10% of 180 degrees is 18 degrees
-    needle_angle = progress_end_angle - 4.3  # Adjust needle to be 10% ahead
+    # If donated_amount is 0, set the needle angle to the start of the chart (180 degrees)
+    if donated_amount == 0:
+        needle_angle = start_angle  # Point the needle to the very beginning
+    else:
+        needle_angle = progress_end_angle - 4.3  # Adjust needle to be 10% ahead
 
     # Define the triangular needle shape
     needle_length = 0.92  # Length of the needle
