@@ -18,23 +18,21 @@ def create_gauge_chart(project_name, donated_amount, target_amount):
     theta = np.linspace(start_angle, end_angle, 100)
     ax.plot(np.cos(np.radians(theta)), np.sin(np.radians(theta)), color='red', lw=30)
 
-    # Draw the donation progress (green arc), stop at 100% visually
-    progress_end_angle = start_angle - (visual_percentage * 180)  # Capped to 100% visually
-    theta_progress = np.linspace(start_angle, progress_end_angle, 100)
-    ax.plot(np.cos(np.radians(theta_progress)), np.sin(np.radians(theta_progress)), color='green', lw=30)
-
     # Move the needle 10% ahead of the green progress
     # If donated_amount is 0, reduce the needle angle by 18% to point to the very beginning
     if donated_amount == 0:
-        needle_angle = start_angle + (0.02 * 180)  # Add 18% of 180 degrees to start_angle
+        needle_angle = start_angle + (0.18 * 180)  # Add 18% of 180 degrees to start_angle
     else:
         # Adjust needle angle to point exactly at the center when progress is 50%
         if actual_percentage == 0.5:
             needle_angle = start_angle - 90  # Exactly at the center (vertical)
-            progress_end_angle =start_angle - 90
-            
         else:
-            needle_angle = progress_end_angle - 4.7  # Adjust needle to be 10% ahead
+            needle_angle = start_angle - (visual_percentage * 180)  # Align needle with progress
+
+    # Draw the donation progress (green arc), aligning it exactly with the needle
+    progress_end_angle = needle_angle  # Align green arc with needle
+    theta_progress = np.linspace(start_angle, progress_end_angle, 100)
+    ax.plot(np.cos(np.radians(theta_progress)), np.sin(np.radians(theta_progress)), color='green', lw=30)
 
     # Define the triangular needle shape
     needle_length = 0.92  # Length of the needle
