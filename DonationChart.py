@@ -30,7 +30,7 @@ def create_gauge_chart(project_name, donated_amount, target_amount):
     else:
         # Adjust needle angle to point exactly at the center when progress is 50%
         if actual_percentage == 0.5:
-            progress_end_angle - 40
+    
             needle_angle = start_angle - 90  # Exactly at the center (vertical)
         
             
