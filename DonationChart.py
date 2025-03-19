@@ -26,9 +26,13 @@ def create_gauge_chart(project_name, donated_amount, target_amount):
     # Move the needle 10% ahead of the green progress
     # If donated_amount is 0, reduce the needle angle by 18% to point to the very beginning
     if donated_amount == 0:
-        needle_angle = start_angle + (0.024 * 180)  # Add 18% of 180 degrees to start_angle
+        needle_angle = start_angle + (0.02 * 180)  # Add 18% of 180 degrees to start_angle
     else:
-        needle_angle = progress_end_angle - 4.3  # Adjust needle to be 10% ahead
+        # Adjust needle angle to point exactly at the center when progress is 50%
+        if actual_percentage == 0.5:
+            needle_angle = start_angle - 90  # Exactly at the center (vertical)
+        else:
+            needle_angle = progress_end_angle - 4.7  # Adjust needle to be 10% ahead
 
     # Define the triangular needle shape
     needle_length = 0.92  # Length of the needle
