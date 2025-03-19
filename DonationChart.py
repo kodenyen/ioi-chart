@@ -29,12 +29,8 @@ def create_gauge_chart(project_name, donated_amount, target_amount):
         else:
             needle_angle = start_angle - (visual_percentage * 180)  # Align needle with progress
 
-    # Draw the donation progress (green arc), aligning it exactly with the needle for 50% progress
-    if actual_percentage == 0.5:
-        progress_end_angle = needle_angle  # Align green arc with needle for 50% progress
-    else:
-        progress_end_angle = start_angle - (visual_percentage * 180)  # Default behavior for other percentages
-
+    # Draw the donation progress (green arc), aligning it exactly with the needle
+    progress_end_angle = needle_angle  # Align green arc with needle
     theta_progress = np.linspace(start_angle, progress_end_angle, 100)
     ax.plot(np.cos(np.radians(theta_progress)), np.sin(np.radians(theta_progress)), color='green', lw=30)
 
