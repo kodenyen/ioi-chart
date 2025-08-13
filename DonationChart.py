@@ -36,7 +36,7 @@ def create_gauge_chart(project_name, donated_amount, target_amount):
         else:
             needle_angle = progress_end_angle - 4.7
 
-    # Draw needle
+    # Draw needle (corrected syntax)
     needle_length = 0.92
     needle_width = 0.06
     needle_tip = (
@@ -46,13 +46,16 @@ def create_gauge_chart(project_name, donated_amount, target_amount):
     needle_base_left = (
         needle_width * np.cos(np.radians(needle_angle + 90)),
         needle_width * np.sin(np.radians(needle_angle + 90))
+    )
     needle_base_right = (
         needle_width * np.cos(np.radians(needle_angle - 90)),
         needle_width * np.sin(np.radians(needle_angle - 90))
+    )
     
     needle = plt.Polygon(
         [needle_tip, needle_base_left, needle_base_right],
-        closed=True, color='black', zorder=3)
+        closed=True, color='black', zorder=3
+    )
     ax.add_patch(needle)
 
     # Draw pivot
