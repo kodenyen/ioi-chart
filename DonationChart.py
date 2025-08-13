@@ -5,13 +5,13 @@ from io import BytesIO
 import textwrap
 
 def create_gauge_chart(project_name, donated_amount, target_amount):
-    fig, ax = plt.subplots(figsize=(12, 8), subplot_kw={'aspect': 'equal'})
-    
-    # Set Garamond font for matplotlib
+    # Set up figure with Garamond font
     plt.rcParams['font.family'] = 'serif'
     plt.rcParams['font.serif'] = ['Garamond']
     plt.rcParams['font.weight'] = 'bold'
     
+    fig, ax = plt.subplots(figsize=(12, 8), subplot_kw={'aspect': 'equal'})
+
     # Calculate percentages
     actual_percentage = donated_amount / target_amount
     visual_percentage = min(actual_percentage, 1.0)
@@ -36,7 +36,7 @@ def create_gauge_chart(project_name, donated_amount, target_amount):
         else:
             needle_angle = progress_end_angle - 4.7
 
-    # Draw needle (corrected syntax)
+    # Draw needle
     needle_length = 0.92
     needle_width = 0.06
     needle_tip = (
@@ -75,20 +75,24 @@ def create_gauge_chart(project_name, donated_amount, target_amount):
     donated_amount_formatted = f"{donated_amount:,}"
     target_amount_formatted = f"{target_amount:,}"
 
-    # Adjusted label positions
+    # Text labels with Garamond font
     ax.text(-1, -0.25, f'Donated: ${donated_amount_formatted}', 
-            horizontalalignment='center', fontsize=14, fontweight='bold', color='black')
+            horizontalalignment='center', fontsize=14, fontweight='bold', color='black',
+            fontfamily='serif')
     ax.text(1, -0.25, f'Target: ${target_amount_formatted}', 
-            horizontalalignment='center', fontsize=14, fontweight='bold', color='black')
-
+            horizontalalignment='center', fontsize=14, fontweight='bold', color='black',
+            fontfamily='serif')
+    
     progress_percentage = round(actual_percentage * 100)
     ax.text(0, -0.4, f'Progress: {progress_percentage}%', 
-            horizontalalignment='center', fontsize=26, fontweight='bold', color='black')
+            horizontalalignment='center', fontsize=26, fontweight='bold', color='black',
+            fontfamily='serif')
 
-    # Project title
+    # Project title with Garamond
     wrapped_project_name = textwrap.fill(project_name, width=20)
     plt.title(wrapped_project_name, fontsize=30, fontweight='bold', 
-             pad=20, ha='center', va='center', multialignment='center')
+             pad=20, ha='center', va='center', multialignment='center',
+             fontfamily='serif')
 
     ax.set_xlim(-1.2, 1.2)
     ax.set_ylim(-1.2, 1.2)
@@ -105,7 +109,7 @@ def get_chart_image(fig):
 def main():
     st.markdown("""
         <style>
-            /* Garamond font for all elements */
+            /* Garamond font for all Streamlit elements */
             body, .stTextInput > div > input, .stNumberInput > div > input,
             .stTextInput label, .stNumberInput label, h2, .stButton button {
                 font-family: "Garamond", serif !important;
