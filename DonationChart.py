@@ -78,7 +78,7 @@ def create_gauge_chart(project_name, donated_amount, target_amount):
     # Adjusted label positions
     ax.text(-1, -0.19, f'Donated: ${donated_amount_formatted}', 
             horizontalalignment='center', fontsize=14, fontweight='bold', color='black')
-    ax.text(1, -0.25, f'Target: ${target_amount_formatted}', 
+    ax.text(1, -0.19, f'Target: ${target_amount_formatted}', 
             horizontalalignment='center', fontsize=14, fontweight='bold', color='black')
 
     progress_percentage = round(actual_percentage * 100)
@@ -175,6 +175,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
